@@ -151,6 +151,8 @@ h1 span {
 
 #game-canvas:focus-visible,
 .start-button:focus-visible,
+.nickname-form input:focus-visible,
+.nickname-form button:focus-visible,
 .brand:focus-visible {
   outline: 3px solid #df5635;
   outline-offset: 4px;
@@ -203,6 +205,110 @@ kbd {
 .start-button span {
   padding-left: 6px;
   font-size: 15px;
+}
+
+.leaderboard {
+  margin-top: 30px;
+  padding-top: 22px;
+  border-top: 2px solid #e8e4d7;
+}
+
+.leaderboard-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.leaderboard-heading .eyebrow {
+  margin-bottom: 5px;
+}
+
+.leaderboard-heading h2 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.leaderboard-status,
+.nickname-status {
+  margin: 0;
+  color: #817966;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.leaderboard-status {
+  text-align: right;
+}
+
+.nickname-form {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 16px;
+}
+
+.nickname-form label {
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.nickname-form input {
+  min-width: 0;
+  min-height: 38px;
+  padding: 0 9px;
+  border: 1px solid #d9d3c4;
+  background: #fffdf6;
+  color: #403a31;
+  font: inherit;
+  font-size: 11px;
+}
+
+.nickname-form button {
+  min-height: 38px;
+  padding: 0 10px;
+  border: 1px solid #403a31;
+  background: #f4f1e8;
+  color: #403a31;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.nickname-status {
+  flex: 1 1 auto;
+}
+
+.leaderboard-list {
+  display: grid;
+  gap: 7px;
+  margin: 17px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.leaderboard-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 11px;
+  border: 1px solid #e8e4d7;
+  background: #fffdf6;
+  font-size: 12px;
+}
+
+.leaderboard-list li strong {
+  color: #df5635;
+  letter-spacing: 1px;
+}
+
+.leaderboard-list .leaderboard-empty {
+  justify-content: center;
+  color: #817966;
+  font-size: 11px;
+  text-align: center;
 }
 
 .game-footer {
@@ -263,6 +369,32 @@ kbd {
 
   .start-button {
     width: 100%;
+  }
+
+  .leaderboard-heading {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .leaderboard-status {
+    text-align: left;
+  }
+
+  .nickname-form {
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+
+  .nickname-form label {
+    width: 100%;
+  }
+
+  .nickname-form input {
+    flex: 1 1 140px;
+  }
+
+  .nickname-status {
+    flex-basis: 100%;
   }
 }
 

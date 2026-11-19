@@ -7,6 +7,8 @@
   <meta name="description" content="Corra pelo mundo do HTML5 e desvie das tags!">
   <title>HTML Run — Corrida de Tags</title>
   <link rel="stylesheet" href="style.css">
+  <script src="supabase-config.js" defer></script>
+  <script src="scoreboard.js" defer></script>
   <script src="script.js" defer></script>
 </head>
 <body>
@@ -40,6 +42,26 @@
         <p><kbd>ESPAÇO</kbd> / <kbd>↑</kbd> ou toque para pular</p>
         <button class="start-button" id="start-button" type="button">Começar jogo <span aria-hidden="true">→</span></button>
       </div>
+
+      <section class="leaderboard" aria-labelledby="leaderboard-title">
+        <div class="leaderboard-heading">
+          <div>
+            <p class="eyebrow">JOGADORES ONLINE</p>
+            <h2 id="leaderboard-title">Placar ao vivo</h2>
+          </div>
+          <p id="leaderboard-status" class="leaderboard-status" role="status">Conectando ao placar...</p>
+        </div>
+        <form id="nickname-form" class="nickname-form">
+          <label for="nickname-input">Seu apelido</label>
+          <input id="nickname-input" name="nickname" type="text" maxlength="20"
+            autocomplete="nickname" placeholder="Como quer aparecer?" required>
+          <button type="submit">Salvar apelido</button>
+          <span id="nickname-status" class="nickname-status" role="status"></span>
+        </form>
+        <ol id="leaderboard-list" class="leaderboard-list" aria-label="Dez melhores pontuações">
+          <li class="leaderboard-empty">Carregando pontuações...</li>
+        </ol>
+      </section>
     </section>
 
     <footer class="game-footer">

@@ -25,6 +25,7 @@ let runTime = 0;
 let nextObstacleDistance = 340;
 let lastFrameTime = 0;
 let obstacles = [];
+let difficulty = 0;
 
 const obstacleTypes = [
   { label: "</>", width: 48, height: 42, color: "#438b5b" },
@@ -37,6 +38,7 @@ function startGame() {
   distance = 0;
   score = 0;
   speed = 360;
+  difficulty = 0;
   runTime = 0;
   nextObstacleDistance = 340;
   obstacles = [];
@@ -66,13 +68,15 @@ function finishGame() {
   bestScoreElement.textContent = String(bestScore).padStart(5, "0");
   startButton.innerHTML = 'Jogar novamente <span aria-hidden="true">↻</span>';
   gameStatus.textContent = `Fim de jogo. Sua pontuação: ${score}. Aperte espaço ou o botão para jogar novamente.`;
+  window.submitLeaderboardScore(score);
   startButton.focus({ preventScroll: true });
 }
 
 function update(delta) {
   distance += speed * delta;
-  speed = Math.min(360 + distance * 0.025, 650);
   score = Math.floor(distance / 10);
+  difficulty = Math.min(score / 1200, 1);
+  speed = 360 + difficulty * 420;
   runTime += delta;
 
   player.velocityY += 1900 * delta;
@@ -86,7 +90,8 @@ function update(delta) {
   if (distance >= nextObstacleDistance) {
     const type = obstacleTypes[Math.floor(Math.random() * obstacleTypes.length)];
     obstacles.push({ ...type, x: width + 12 });
-    nextObstacleDistance = distance + 500 + Math.random() * 260;
+    const gapInSeconds = 1.65 - difficulty * 0.55 + Math.random() * (0.55 - difficulty * 0.15);
+    nextObstacleDistance = distance + speed * gapInSeconds;
   }
 
   obstacles.forEach((obstacle) => {
