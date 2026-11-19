@@ -3,78 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#6857e8">
-  <meta name="description" content="Teste seus conhecimentos de HTML5 neste quiz divertido e educativo.">
-  <title>HTML5 QUIZ – Acerte a Tag!</title>
+  <meta name="theme-color" content="#f4f1e8">
+  <meta name="description" content="Corra pelo mundo do HTML5 e desvie das tags!">
+  <title>HTML Run — Corrida de Tags</title>
   <link rel="stylesheet" href="style.css">
   <script src="script.js" defer></script>
 </head>
 <body>
-  <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
-  <main class="app" id="main-content" tabindex="-1">
-    <header class="brand">
-      <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>
-      <span>HTML5 <strong>QUIZ</strong></span>
+  <main class="game-shell">
+    <header class="game-header">
+      <a class="brand" href="./" aria-label="HTML Run, início">
+        <span class="brand-icon" aria-hidden="true">&lt;/&gt;</span>
+        <span>HTML <strong>RUN</strong></span>
+      </a>
+      <span class="pixel-label">EDIÇÃO HTML5</span>
     </header>
 
-    <section class="panel intro-screen" id="intro-screen" aria-labelledby="intro-title">
-      <div class="hero-illustration" aria-hidden="true">
-        <span class="spark spark-one">✦</span>
-        <span class="spark spark-two">✦</span>
-        <span class="html-badge">&lt;html&gt;</span>
-        <span class="tag-bubble">&lt;/&gt;</span>
-      </div>
-      <p class="eyebrow">DESAFIO DO DIA</p>
-      <h1 id="intro-title" tabindex="-1">HTML5 QUIZ<br><span>Acerte a Tag!</span></h1>
-      <p class="intro-copy">Mostre que você manda bem em HTML5! Responda 10 perguntas e aprenda uma curiosidade a cada rodada.</p>
-      <ul class="game-facts">
-        <li><span aria-hidden="true">❓</span> 10 perguntas</li>
-        <li><span aria-hidden="true">⭐</span> Até 100 pontos</li>
-        <li><span aria-hidden="true">⏱️</span> 15 segundos cada</li>
-      </ul>
-      <button class="button button-primary" id="start-button" type="button">Começar <span aria-hidden="true">→</span></button>
-      <p class="small-note">Prepare-se para codar! <span aria-hidden="true">🚀</span></p>
-    </section>
-
-    <section class="panel quiz-screen" id="quiz-screen" aria-labelledby="question-text" hidden>
-      <div class="quiz-topline">
-        <span class="question-count" id="question-count">PERGUNTA 1 DE 10</span>
-        <label class="timer-toggle">
-          <input id="timer-toggle" type="checkbox" checked>
-          <span>Ativar cronômetro (15 s)</span>
-        </label>
-        <div class="timer" id="timer" role="timer" aria-label="Tempo restante: 15 segundos">
-          <span aria-hidden="true">⏱</span>
-          <span id="timer-value">15</span><span class="timer-unit">s</span>
+    <section class="game-panel" aria-labelledby="game-title">
+      <div class="game-heading">
+        <div>
+          <p class="eyebrow">CORRIDA DE TAGS</p>
+          <h1 id="game-title">Corra. Pule. <span>Codifique.</span></h1>
         </div>
+        <p class="score-hint">RECORDE <strong id="best-score">00000</strong></p>
       </div>
-      <div class="progress-track" role="progressbar" aria-label="Progresso do quiz" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0">
-        <div class="progress-fill" id="progress-fill"></div>
+
+      <div class="canvas-frame">
+        <canvas id="game-canvas" width="800" height="260" tabindex="0"
+          role="img" aria-label="Jogo HTML Run. Desvie das tags pulando.">
+          Seu navegador não suporta canvas. Atualize o navegador para jogar.
+        </canvas>
       </div>
-      <p class="question-category">FUNDAMENTOS DE HTML5</p>
-      <h2 class="question" id="question-text" tabindex="-1"></h2>
-      <div class="answers" id="answers" aria-label="Alternativas"></div>
-      <div class="feedback" id="feedback" role="status" aria-live="polite" hidden>
-        <p class="feedback-title" id="feedback-title"></p>
-        <p class="feedback-explanation" id="feedback-explanation"></p>
-      </div>
-      <div class="quiz-footer">
-        <span class="score-label">SUA PONTUAÇÃO <strong id="score">0</strong></span>
-        <button class="button button-next" id="next-button" type="button" hidden>Próxima <span aria-hidden="true">→</span></button>
+      <p class="sr-only" id="game-status" role="status" aria-live="polite">Aperte espaço ou toque para começar.</p>
+
+      <div class="game-controls">
+        <p><kbd>ESPAÇO</kbd> / <kbd>↑</kbd> ou toque para pular</p>
+        <button class="start-button" id="start-button" type="button">Começar jogo <span aria-hidden="true">→</span></button>
       </div>
     </section>
 
-    <section class="panel result-screen" id="result-screen" aria-labelledby="result-title" hidden>
-      <div class="result-art" id="result-art" aria-hidden="true">🏆</div>
-      <p class="eyebrow">DESAFIO CONCLUÍDO</p>
-      <h2 id="result-title" tabindex="-1">Mandou bem!</h2>
-      <p class="result-copy" id="result-message"></p>
-      <div class="final-score"><span id="final-score">0</span><span>pontos</span></div>
-      <p class="result-detail">de 100 pontos possíveis</p>
-      <button class="button button-primary" id="restart-button" type="button">Jogar novamente <span aria-hidden="true">↻</span></button>
-      <p class="small-note">Continue aprendendo e arrasando! <span aria-hidden="true">✨</span></p>
-    </section>
-    <footer class="page-footer">FEITO PARA QUEM ESTÁ APRENDENDO A WEB <span aria-hidden="true">💜</span></footer>
+    <footer class="game-footer">
+      <span>FEITO DE PIXELS E TAGS</span>
+      <span aria-hidden="true">&lt;html&gt; ♥</span>
+    </footer>
   </main>
 </body>
 </html>
