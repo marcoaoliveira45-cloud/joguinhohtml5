@@ -179,6 +179,8 @@ function drawBackground() {
     context.fill();
   }
 
+  drawHillsAndTrees();
+
   context.fillStyle = isNight ? "#35405d" : "#e8e4d7";
   [42, 116, 196].forEach((baseX, index) => {
     const drift = (distance * (0.08 + index * 0.025)) % (width + 60);
@@ -194,6 +196,48 @@ function drawBackground() {
   context.fillText("</body>", 605, 113);
 }
 
+function drawHillsAndTrees() {
+  const hillColors = isNight
+    ? ["#263b4e", "#304957", "#38574e"]
+    : ["#d9efc3", "#b8e3ae", "#91d29e"];
+
+  hillColors.forEach((color, layer) => {
+    const drift = (distance * (0.08 + layer * 0.045)) % (width + 220);
+    const startX = -220 - drift;
+    const baseline = groundY + 1;
+    const crest = groundY - 38 - layer * 9;
+    context.beginPath();
+    context.moveTo(startX, baseline);
+    for (let x = startX; x < width + 220; x += 220) {
+      context.quadraticCurveTo(x + 110, crest - 30, x + 220, baseline);
+    }
+    context.closePath();
+    context.fillStyle = color;
+    context.fill();
+  });
+
+  const treeColors = isNight
+    ? ["#3c725f", "#477c61", "#315e58", "#528568"]
+    : ["#41a86c", "#65bd63", "#309b79", "#8acb57"];
+  const drift = (distance * 0.2) % 158;
+  for (let index = 0; index < 8; index += 1) {
+    const x = ((index * 158 - drift + width + 158) % (width + 158)) - 55;
+    const treeHeight = 17 + (index % 3) * 5;
+    const treeY = groundY - 30 - treeHeight;
+    context.fillStyle = isNight ? "#735f53" : "#9b6846";
+    context.fillRect(x + 13, treeY + 13, 5, treeHeight + 18);
+
+    context.fillStyle = treeColors[index % treeColors.length];
+    context.beginPath();
+    context.arc(x + 15, treeY + 11, 13, 0, Math.PI * 2);
+    context.arc(x + 6, treeY + 17, 8, 0, Math.PI * 2);
+    context.arc(x + 24, treeY + 17, 8, 0, Math.PI * 2);
+    context.fill();
+    context.fillStyle = isNight ? "#9abf80" : "#d4ed92";
+    context.fillRect(x + 10, treeY + 7, 3, 3);
+  }
+}
+
 function drawGround() {
   context.fillStyle = isNight ? "#d0c8b7" : "#4b4337";
   context.fillRect(0, groundY, width, 3);
@@ -201,6 +245,26 @@ function drawGround() {
   const offset = (distance * 0.8) % 46;
   for (let x = -46 + offset; x < width; x += 46) {
     context.fillRect(x, groundY + 13, 22, 4);
+  }
+
+  const plantColors = isNight
+    ? ["#9abf80", "#d9a8b7", "#e7cd79", "#91b9d1"]
+    : ["#3a9c5e", "#e86f82", "#f0bf45", "#7d75cf"];
+  const plantOffset = (distance * 0.8) % 92;
+  for (let index = 0, x = -92 + plantOffset; x < width; index += 1, x += 92) {
+    const plantX = Math.round(x + (index % 2) * 17);
+    const plantHeight = 7 + (index % 3) * 3;
+    context.fillStyle = isNight ? "#6da274" : "#3c9b5b";
+    context.fillRect(plantX, groundY - plantHeight, 2, plantHeight);
+    context.fillRect(plantX - 4, groundY - plantHeight + 3, 5, 2);
+    context.fillRect(plantX + 1, groundY - plantHeight + 5, 5, 2);
+
+    context.fillStyle = plantColors[index % plantColors.length];
+    context.beginPath();
+    context.arc(plantX + 1, groundY - plantHeight, 3, 0, Math.PI * 2);
+    context.fill();
+    context.fillStyle = "#fff4ca";
+    context.fillRect(plantX, groundY - plantHeight - 1, 2, 2);
   }
 }
 

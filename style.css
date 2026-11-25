@@ -12,14 +12,31 @@
 }
 
 body {
+  position: relative;
+  isolation: isolate;
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
   background:
-    linear-gradient(90deg, rgb(64 58 49 / 3%) 1px, transparent 1px),
-    linear-gradient(rgb(64 58 49 / 3%) 1px, transparent 1px),
-    #f4f1e8;
-  background-size: 24px 24px;
+    radial-gradient(ellipse at 12% 8%, rgb(242 106 61 / 12%), transparent 34rem),
+    radial-gradient(ellipse at 88% 78%, rgb(83 171 128 / 13%), transparent 38rem),
+    linear-gradient(145deg, #faf8f1, #f1eee5 55%, #f8f4e9);
+}
+
+body::before {
+  position: fixed;
+  z-index: 10;
+  inset: 12px;
+  border: 2px solid transparent;
+  border-radius: 22px;
+  background:
+    linear-gradient(transparent, transparent) padding-box,
+    linear-gradient(135deg, #f26a3d, #f4c95d, #59b98c, #6c80d6, #f26a3d) border-box;
+  background-size: 100% 100%, 300% 300%;
+  background-position: 0 0, 0% 50%;
+  animation: page-frame-flow 12s ease-in-out infinite alternate;
+  content: "";
+  pointer-events: none;
 }
 
 button {
@@ -27,6 +44,7 @@ button {
 }
 
 .game-shell {
+  position: relative;
   width: min(100% - 36px, 920px);
   min-height: 100vh;
   margin: 0 auto;
@@ -65,9 +83,10 @@ button {
   width: 36px;
   height: 36px;
   place-items: center;
-  border: 2px solid #403a31;
+  border: 0;
+  border-radius: 11px;
   background: #f26a3d;
-  box-shadow: 3px 3px 0 #403a31;
+  box-shadow: 0 5px 12px rgb(143 64 36 / 22%);
   color: #fff8e9;
   font-size: 13px;
 }
@@ -83,9 +102,24 @@ button {
 .game-panel {
   margin: auto 0;
   padding: 30px;
-  border: 3px solid #403a31;
-  background: #fffdf6;
-  box-shadow: 8px 8px 0 #d9d3c4;
+  border: 2px solid transparent;
+  border-radius: 22px;
+  background:
+    linear-gradient(#fffdf6, #fffdf6) padding-box,
+    linear-gradient(125deg, #f26a3d, #f4c95d 34%, #59b98c 67%, #7985dc) border-box;
+  background-size: 100% 100%, 280% 280%;
+  animation: panel-border-flow 10s ease-in-out infinite alternate;
+  box-shadow: 0 24px 70px rgb(64 58 49 / 12%), 0 4px 14px rgb(64 58 49 / 6%);
+}
+
+@keyframes page-frame-flow {
+  from { background-position: 0 0, 0% 50%; }
+  to { background-position: 0 0, 100% 50%; }
+}
+
+@keyframes panel-border-flow {
+  from { background-position: 0 0, 0% 50%; }
+  to { background-position: 0 0, 100% 50%; }
 }
 
 .game-heading {
@@ -135,7 +169,8 @@ h1 span {
 
 .canvas-frame {
   overflow: hidden;
-  border: 3px solid #403a31;
+  border: 2px solid #d6d8cc;
+  border-radius: 13px;
   background: #fffdf6;
   line-height: 0;
 }
@@ -190,9 +225,10 @@ kbd {
 .start-button {
   min-height: 44px;
   padding: 0 17px;
-  border: 2px solid #403a31;
-  background: #f26a3d;
-  box-shadow: 3px 3px 0 #403a31;
+  border: 0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #f26a3d, #e84f67);
+  box-shadow: 0 6px 14px rgb(223 86 53 / 24%);
   color: #fffdf6;
   cursor: pointer;
   font-size: 11px;
@@ -201,8 +237,8 @@ kbd {
 }
 
 .start-button:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0 #403a31;
+  transform: translateY(-2px);
+  box-shadow: 0 9px 18px rgb(223 86 53 / 28%);
 }
 
 .start-button span {
@@ -212,17 +248,17 @@ kbd {
 
 .game-tabs {
   display: flex;
-  gap: 5px;
+  gap: 7px;
   margin-top: 21px;
-  border-bottom: 2px solid #403a31;
+  border-bottom: 1px solid #e8e4d7;
 }
 
 .game-tab {
   min-width: 90px;
   padding: 10px 14px;
-  border: 2px solid #403a31;
-  border-bottom: 0;
-  background: #e8e4d7;
+  border: 0;
+  border-radius: 11px 11px 0 0;
+  background: transparent;
   color: #726958;
   cursor: pointer;
   font-size: 11px;
@@ -231,8 +267,8 @@ kbd {
 
 .game-tab.is-active {
   position: relative;
-  bottom: -2px;
-  background: #fffdf6;
+  bottom: -1px;
+  background: #f0eee6;
   color: #df5635;
 }
 
@@ -245,7 +281,8 @@ kbd {
   min-height: 260px;
   margin-top: 16px;
   padding: 17px;
-  border: 2px solid #403a31;
+  border: 1px solid #384451;
+  border-radius: 14px;
   background: #171d25;
   color: #d7e5d0;
 }
@@ -370,6 +407,7 @@ kbd {
   min-height: 38px;
   padding: 0 9px;
   border: 1px solid #d9d3c4;
+  border-radius: 9px;
   background: #fffdf6;
   color: #403a31;
   font: inherit;
@@ -379,7 +417,8 @@ kbd {
 .nickname-form button {
   min-height: 38px;
   padding: 0 10px;
-  border: 1px solid #403a31;
+  border: 1px solid #d9d3c4;
+  border-radius: 9px;
   background: #f4f1e8;
   color: #403a31;
   cursor: pointer;
@@ -406,6 +445,7 @@ kbd {
   gap: 12px;
   padding: 9px 11px;
   border: 1px solid #e8e4d7;
+  border-radius: 9px;
   background: #fffdf6;
   font-size: 12px;
 }
@@ -527,5 +567,10 @@ kbd {
   *::after {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
+  }
+
+  body::before,
+  .game-panel {
+    animation: none;
   }
 }
