@@ -15,10 +15,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-  background:
-    radial-gradient(ellipse at 12% 8%, rgb(242 106 61 / 12%), transparent 34rem),
-    radial-gradient(ellipse at 88% 78%, rgb(83 171 128 / 13%), transparent 38rem),
-    linear-gradient(145deg, #faf8f1, #f1eee5 55%, #f8f4e9);
+  background: #f4f1e8;
 }
 
 button {
@@ -84,19 +81,10 @@ button {
 .game-panel {
   margin: auto 0;
   padding: 30px;
-  border: 2px solid transparent;
+  border: 2px solid #ded9cb;
   border-radius: 22px;
-  background:
-    linear-gradient(#fffdf6, #fffdf6) padding-box,
-    linear-gradient(125deg, #f26a3d, #f4c95d 34%, #59b98c 67%, #7985dc) border-box;
-  background-size: 100% 100%, 280% 280%;
-  animation: panel-border-flow 10s ease-in-out infinite alternate;
+  background: #fffdf6;
   box-shadow: 0 24px 70px rgb(64 58 49 / 12%), 0 4px 14px rgb(64 58 49 / 6%);
-}
-
-@keyframes panel-border-flow {
-  from { background-position: 0 0, 0% 50%; }
-  to { background-position: 0 0, 100% 50%; }
 }
 
 .game-heading {
@@ -247,6 +235,10 @@ kbd {
   bottom: -1px;
   background: #f0eee6;
   color: #df5635;
+}
+
+.tab-panel:not([hidden]) {
+  display: block;
 }
 
 .tab-panel[hidden],
@@ -544,9 +536,5 @@ kbd {
   *::after {
     scroll-behavior: auto !important;
     transition-duration: 0.01ms !important;
-  }
-
-  .game-panel {
-    animation: none;
   }
 }
