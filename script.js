@@ -34,6 +34,10 @@ const obstacleTypes = [
 ];
 
 function startGame() {
+  if (state === "running") {
+    window.submitLeaderboardScore(score);
+  }
+
   state = "running";
   distance = 0;
   score = 0;
