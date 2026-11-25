@@ -149,3 +149,4 @@ async function submitScore(score) {
 }
 
 window.submitLeaderboardScore = submitScore;
+window.isAdminPlayer = () => nicknameInput.value.trim().toUpperCase() === "ADM";

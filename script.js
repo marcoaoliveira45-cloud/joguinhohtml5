@@ -75,8 +75,8 @@ function finishGame() {
 function update(delta) {
   distance += speed * delta;
   score = Math.floor(distance / 10);
-  difficulty = Math.min(score / 1200, 1);
-  speed = 360 + difficulty * 420;
+  difficulty = Math.floor(score / 1000);
+  speed = Math.min(360 + difficulty * 90, 900);
   runTime += delta;
 
   player.velocityY += 1900 * delta;
@@ -88,9 +88,25 @@ function update(delta) {
   }
 
   if (distance >= nextObstacleDistance) {
-    const type = obstacleTypes[Math.floor(Math.random() * obstacleTypes.length)];
-    obstacles.push({ ...type, x: width + 12 });
-    const gapInSeconds = 1.65 - difficulty * 0.55 + Math.random() * (0.55 - difficulty * 0.15);
+    const flyingChance = Math.min(0.25 + difficulty * 0.08, 0.65);
+    if (Math.random() < flyingChance) {
+      const birdHeight = 26;
+      const birdY = Math.random() < 0.7 ? groundY - 68 : groundY - 124;
+      obstacles.push({
+        kind: "bird",
+        x: width + 12,
+        y: birdY,
+        width: 46,
+        height: birdHeight
+      });
+    } else {
+      const type = obstacleTypes[Math.floor(Math.random() * obstacleTypes.length)];
+      obstacles.push({ ...type, kind: "ground", x: width + 12, y: groundY - type.height });
+    }
+
+    const baseGap = Math.max(0.72, 1.65 - difficulty * 0.12);
+    const variableGap = Math.max(0.12, 0.5 - difficulty * 0.04);
+    const gapInSeconds = baseGap + Math.random() * variableGap;
     nextObstacleDistance = distance + speed * gapInSeconds;
   }
 
@@ -108,11 +124,11 @@ function update(delta) {
   const hit = obstacles.some((obstacle) => (
     playerBox.right > obstacle.x + 5
     && playerBox.left < obstacle.x + obstacle.width - 5
-    && playerBox.bottom > groundY - obstacle.height + 5
-    && playerBox.top < groundY
+    && playerBox.bottom > obstacle.y + 4
+    && playerBox.top < obstacle.y + obstacle.height - 4
   ));
 
-  if (hit) finishGame();
+  if (hit && !window.isAdminPlayer()) finishGame();
 }
 
 function drawBackground() {
@@ -178,7 +194,12 @@ function drawPlayer() {
 
 function drawObstacle(obstacle) {
   const x = Math.round(obstacle.x);
-  const y = groundY - obstacle.height;
+  const y = Math.round(obstacle.y);
+
+  if (obstacle.kind === "bird") {
+    drawBird(obstacle, x, y);
+    return;
+  }
 
   context.fillStyle = "#403a31";
   context.fillRect(x, y + 4, obstacle.width, obstacle.height - 4);
@@ -193,12 +214,32 @@ function drawObstacle(obstacle) {
   context.textAlign = "left";
 }
 
+function drawBird(obstacle, x, y) {
+  const wingOffset = Math.floor(runTime * 12) % 2 ? 0 : 7;
+
+  context.fillStyle = "#403a31";
+  context.fillRect(x + 7, y + 10, 25, 9);
+  context.fillRect(x + 27, y + 5, 11, 12);
+  context.fillRect(x + 34, y + 9, 8, 4);
+  context.fillRect(x + 2, y + 8, 7, 4);
+  context.fillRect(x + 13, y + wingOffset, 17, 6);
+
+  context.fillStyle = "#6556c9";
+  context.fillRect(x + 9, y + 11, 21, 5);
+  context.fillRect(x + 29, y + 7, 7, 7);
+  context.fillRect(x + 15, y + wingOffset + 1, 12, 3);
+
+  context.fillStyle = "#fff8e9";
+  context.fillRect(x + 33, y + 8, 2, 2);
+}
+
 function drawScore() {
   context.fillStyle = "#514a3e";
   context.font = "bold 14px monospace";
   context.textAlign = "right";
   context.fillText(`PONTOS ${String(score).padStart(5, "0")}`, width - 18, 26);
   context.textAlign = "left";
+  context.fillText(`NÍVEL ${difficulty + 1}`, 18, 26);
 }
 
 function drawOverlay() {

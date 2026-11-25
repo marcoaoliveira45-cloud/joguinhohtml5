@@ -20,4 +20,4 @@ O jogo funciona sem configurar o placar. Para compartilhar pontuações em tempo
 
 Como o jogo e o envio de pontos acontecem no navegador, este placar de demonstração não impede pontuações manipuladas.
 
-A velocidade aumenta com a pontuação até atingir o limite do jogo, e os obstáculos passam a aparecer com intervalos menores.
+A cada 1.000 pontos, o jogo sobe um nível: a velocidade aumenta e os obstáculos aparecem com intervalos menores. Tags no chão e pássaros no céu exigem pulos em momentos diferentes.
