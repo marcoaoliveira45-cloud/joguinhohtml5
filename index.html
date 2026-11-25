@@ -10,6 +10,7 @@
   <script src="supabase-config.js" defer></script>
   <script src="scoreboard.js" defer></script>
   <script src="script.js" defer></script>
+  <script src="terminal.js" defer></script>
 </head>
 <body>
   <main class="game-shell">
@@ -30,17 +31,40 @@
         <p class="score-hint">RECORDE <strong id="best-score">00000</strong></p>
       </div>
 
-      <div class="canvas-frame">
-        <canvas id="game-canvas" width="800" height="260" tabindex="0"
-          role="img" aria-label="Jogo HTML Run. Desvie das tags pulando.">
-          Seu navegador não suporta canvas. Atualize o navegador para jogar.
-        </canvas>
+      <div class="game-tabs" role="tablist" aria-label="Jogo e terminal">
+        <button class="game-tab is-active" id="game-tab" type="button" role="tab"
+          aria-selected="true" aria-controls="game-view">Jogo</button>
+        <button class="game-tab" id="terminal-tab" type="button" role="tab"
+          aria-selected="false" aria-controls="terminal-view" tabindex="-1">Terminal</button>
       </div>
-      <p class="sr-only" id="game-status" role="status" aria-live="polite">Aperte espaço ou toque para começar.</p>
 
-      <div class="game-controls">
-        <p><kbd>ESPAÇO</kbd> / <kbd>↑</kbd> ou toque para pular</p>
-        <button class="start-button" id="start-button" type="button">Começar jogo <span aria-hidden="true">→</span></button>
+      <section id="game-view" class="tab-panel" role="tabpanel" aria-labelledby="game-tab">
+        <div class="canvas-frame">
+          <canvas id="game-canvas" width="800" height="260" tabindex="0"
+            role="img" aria-label="Jogo HTML Run. Desvie das tags pulando.">
+            Seu navegador não suporta canvas. Atualize o navegador para jogar.
+          </canvas>
+        </div>
+        <p class="sr-only" id="game-status" role="status" aria-live="polite">Aperte espaço ou toque para começar.</p>
+
+        <div class="game-controls">
+          <p><kbd>ESPAÇO</kbd> / <kbd>↑</kbd> ou toque para pular</p>
+          <button class="start-button" id="start-button" type="button">Começar jogo <span aria-hidden="true">→</span></button>
+        </div>
+      </section>
+
+      <section id="terminal-view" class="terminal-panel" role="tabpanel" aria-labelledby="terminal-tab" hidden>
+        <p class="terminal-intro">Personalize a partida com comandos. Digite <code>help</code> para ver as opções.</p>
+        <div id="terminal-output" class="terminal-output" role="log" aria-live="polite">
+          <p>HTML RUN TERMINAL v1.0</p>
+          <p>Configurações salvas neste dispositivo.</p>
+        </div>
+        <form id="terminal-form" class="terminal-form">
+          <label for="terminal-input" aria-label="Comando">&gt;</label>
+          <input id="terminal-input" name="command" type="text" autocomplete="off"
+            autocapitalize="off" spellcheck="false" placeholder="set game.speed 1.5" aria-label="Digite um comando">
+          <button type="submit">Executar</button>
+        </form>
       </div>
 
       <section class="leaderboard" aria-labelledby="leaderboard-title">

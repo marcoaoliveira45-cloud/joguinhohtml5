@@ -7,6 +7,7 @@ const gameStatus = document.querySelector("#game-status");
 const width = canvas.width;
 const height = canvas.height;
 const groundY = height - 32;
+const gravity = 1900;
 const player = {
   x: 78,
   y: groundY - 52,
@@ -27,6 +28,13 @@ let lastFrameTime = 0;
 let obstacles = [];
 let difficulty = 0;
 let isNight = false;
+const gameSettings = {
+  playerColor: "#f26a3d",
+  obstacleColor: null,
+  speedMultiplier: 1,
+  jumpHeight: 125
+};
+window.HTMLRunSettings = gameSettings;
 
 const stars = [
   [42, 34], [105, 78], [174, 28], [238, 92], [292, 42], [358, 71],
@@ -68,7 +76,7 @@ function jump() {
   }
 
   if (player.grounded) {
-    player.velocityY = -690;
+    player.velocityY = -Math.sqrt(2 * gravity * gameSettings.jumpHeight);
     player.grounded = false;
   }
 }
@@ -88,10 +96,10 @@ function update(delta) {
   score = Math.floor(distance / 10);
   difficulty = Math.floor(score / 1000);
   isNight = score >= 4000 && score % 4000 < 1000;
-  speed = Math.min(360 + difficulty * 90, 900);
+  speed = Math.min((360 + difficulty * 140) * gameSettings.speedMultiplier, 1500);
   runTime += delta;
 
-  player.velocityY += 1900 * delta;
+  player.velocityY += gravity * delta;
   player.y += player.velocityY * delta;
   if (player.y >= groundY - player.height) {
     player.y = groundY - player.height;
@@ -100,8 +108,8 @@ function update(delta) {
   }
 
   if (distance >= nextObstacleDistance) {
-    const meteorChance = isNight ? 0.35 : 0;
-    const flyingChance = Math.min(0.25 + difficulty * 0.08, 0.65);
+    const meteorChance = isNight ? Math.min(0.45 + difficulty * 0.03, 0.7) : 0;
+    const flyingChance = Math.min(0.32 + difficulty * 0.07, 0.75);
     if (Math.random() < meteorChance) {
       obstacles.push({
         kind: "meteor",
@@ -126,8 +134,8 @@ function update(delta) {
       obstacles.push({ ...type, kind: "ground", x: width + 12, y: groundY - type.height });
     }
 
-    const baseGap = Math.max(0.72, 1.65 - difficulty * 0.12);
-    const variableGap = Math.max(0.12, 0.5 - difficulty * 0.04);
+    const baseGap = Math.max(0.42, 1.3 - difficulty * 0.1);
+    const variableGap = Math.max(0.08, 0.32 - difficulty * 0.02);
     const gapInSeconds = baseGap + Math.random() * variableGap;
     nextObstacleDistance = distance + speed * gapInSeconds;
   }
@@ -210,7 +218,7 @@ function drawPlayer() {
   context.fillRect(x + 8, y + 40, 32, 6);
   context.fillRect(x + 14, y + 46, 20, 4);
 
-  context.fillStyle = "#f26a3d";
+  context.fillStyle = gameSettings.playerColor;
   context.fillRect(x + 12, y + 6, 24, 5);
   context.fillRect(x + 8, y + 12, 32, 24);
   context.fillRect(x + 12, y + 36, 24, 5);
@@ -244,7 +252,7 @@ function drawObstacle(obstacle) {
 
   context.fillStyle = "#403a31";
   context.fillRect(x, y + 4, obstacle.width, obstacle.height - 4);
-  context.fillStyle = obstacle.color;
+  context.fillStyle = gameSettings.obstacleColor || obstacle.color;
   context.fillRect(x + 4, y, obstacle.width - 8, obstacle.height - 4);
   context.fillStyle = "#fff8e9";
   context.fillRect(x + 9, y + 8, 5, 4);
@@ -340,6 +348,7 @@ function frame(timestamp) {
 
 function handleKeydown(event) {
   if (event.code !== "Space" && event.code !== "ArrowUp" && event.code !== "KeyW") return;
+  if (event.target?.closest?.("input, button, textarea, select")) return;
   event.preventDefault();
   if (event.repeat) return;
   jump();
