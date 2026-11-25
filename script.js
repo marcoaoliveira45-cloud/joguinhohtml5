@@ -26,6 +26,12 @@ let nextObstacleDistance = 340;
 let lastFrameTime = 0;
 let obstacles = [];
 let difficulty = 0;
+let isNight = false;
+
+const stars = [
+  [42, 34], [105, 78], [174, 28], [238, 92], [292, 42], [358, 71],
+  [423, 30], [491, 86], [547, 39], [617, 72], [685, 31], [754, 83]
+];
 
 const obstacleTypes = [
   { label: "</>", width: 48, height: 42, color: "#438b5b" },
@@ -43,6 +49,7 @@ function startGame() {
   score = 0;
   speed = 360;
   difficulty = 0;
+  isNight = false;
   runTime = 0;
   nextObstacleDistance = 340;
   obstacles = [];
@@ -80,6 +87,7 @@ function update(delta) {
   distance += speed * delta;
   score = Math.floor(distance / 10);
   difficulty = Math.floor(score / 1000);
+  isNight = score >= 4000 && score % 4000 < 1000;
   speed = Math.min(360 + difficulty * 90, 900);
   runTime += delta;
 
@@ -92,8 +100,18 @@ function update(delta) {
   }
 
   if (distance >= nextObstacleDistance) {
+    const meteorChance = isNight ? 0.35 : 0;
     const flyingChance = Math.min(0.25 + difficulty * 0.08, 0.65);
-    if (Math.random() < flyingChance) {
+    if (Math.random() < meteorChance) {
+      obstacles.push({
+        kind: "meteor",
+        x: width + 12,
+        y: -18,
+        width: 34,
+        height: 24,
+        fallSpeed: 220 + Math.random() * 50
+      });
+    } else if (Math.random() < flyingChance) {
       const birdHeight = 26;
       const birdY = Math.random() < 0.7 ? groundY - 68 : groundY - 124;
       obstacles.push({
@@ -116,8 +134,9 @@ function update(delta) {
 
   obstacles.forEach((obstacle) => {
     obstacle.x -= speed * delta;
+    if (obstacle.kind === "meteor") obstacle.y += obstacle.fallSpeed * delta;
   });
-  obstacles = obstacles.filter((obstacle) => obstacle.x + obstacle.width > 0);
+  obstacles = obstacles.filter((obstacle) => obstacle.x + obstacle.width > 0 && obstacle.y < height);
 
   const playerBox = {
     left: player.x + 8,
@@ -136,10 +155,23 @@ function update(delta) {
 }
 
 function drawBackground() {
-  context.fillStyle = "#fffdf6";
+  context.fillStyle = isNight ? "#17213f" : "#fffdf6";
   context.fillRect(0, 0, width, height);
 
-  context.fillStyle = "#e8e4d7";
+  if (isNight) {
+    context.fillStyle = "#f4e7b2";
+    stars.forEach(([x, y]) => context.fillRect(x, y, 3, 3));
+    context.beginPath();
+    context.arc(704, 53, 19, 0, Math.PI * 2);
+    context.fillStyle = "#f4e7b2";
+    context.fill();
+    context.beginPath();
+    context.arc(713, 45, 18, 0, Math.PI * 2);
+    context.fillStyle = "#17213f";
+    context.fill();
+  }
+
+  context.fillStyle = isNight ? "#35405d" : "#e8e4d7";
   [42, 116, 196].forEach((baseX, index) => {
     const drift = (distance * (0.08 + index * 0.025)) % (width + 60);
     const cloudX = (baseX - drift + width + 60) % (width + 60) - 30;
@@ -148,16 +180,16 @@ function drawBackground() {
     context.fillRect(cloudX + 8, cloudY - 6, 20, 6);
   });
 
-  context.fillStyle = "#ded9cb";
+  context.fillStyle = isNight ? "#65708b" : "#ded9cb";
   context.font = "bold 12px monospace";
   context.fillText("<html>", 310, 64);
   context.fillText("</body>", 605, 113);
 }
 
 function drawGround() {
-  context.fillStyle = "#4b4337";
+  context.fillStyle = isNight ? "#d0c8b7" : "#4b4337";
   context.fillRect(0, groundY, width, 3);
-  context.fillStyle = "#d9d3c4";
+  context.fillStyle = isNight ? "#4c5875" : "#d9d3c4";
   const offset = (distance * 0.8) % 46;
   for (let x = -46 + offset; x < width; x += 46) {
     context.fillRect(x, groundY + 13, 22, 4);
@@ -205,6 +237,11 @@ function drawObstacle(obstacle) {
     return;
   }
 
+  if (obstacle.kind === "meteor") {
+    drawMeteor(x, y);
+    return;
+  }
+
   context.fillStyle = "#403a31";
   context.fillRect(x, y + 4, obstacle.width, obstacle.height - 4);
   context.fillStyle = obstacle.color;
@@ -237,13 +274,26 @@ function drawBird(obstacle, x, y) {
   context.fillRect(x + 33, y + 8, 2, 2);
 }
 
+function drawMeteor(x, y) {
+  context.fillStyle = "#e95838";
+  context.fillRect(x + 7, y - 10, 7, 18);
+  context.fillStyle = "#ffb14a";
+  context.fillRect(x + 10, y - 8, 4, 13);
+  context.fillStyle = "#713b43";
+  context.fillRect(x + 12, y + 3, 17, 15);
+  context.fillStyle = "#bb5540";
+  context.fillRect(x + 16, y, 13, 14);
+  context.fillStyle = "#f28a45";
+  context.fillRect(x + 20, y + 4, 5, 5);
+}
+
 function drawScore() {
   context.fillStyle = "#514a3e";
   context.font = "bold 14px monospace";
   context.textAlign = "right";
   context.fillText(`PONTOS ${String(score).padStart(5, "0")}`, width - 18, 26);
   context.textAlign = "left";
-  context.fillText(`NÍVEL ${difficulty + 1}`, 18, 26);
+  context.fillText(`NÍVEL ${difficulty + 1} · ${isNight ? "NOITE" : "DIA"}`, 18, 26);
 }
 
 function drawOverlay() {
