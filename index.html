@@ -19,7 +19,13 @@
         <span class="brand-icon" aria-hidden="true">&lt;/&gt;</span>
         <span>HTML <strong>RUN</strong></span>
       </a>
-      <span class="pixel-label">EDIÇÃO HTML5</span>
+      <form id="nickname-form" class="nickname-form" aria-label="Escolha seu apelido">
+        <label for="nickname-input">Apelido</label>
+        <input id="nickname-input" name="nickname" type="text" maxlength="20"
+          autocomplete="nickname" placeholder="Seu nome" required>
+        <button type="submit">Salvar</button>
+        <span id="nickname-status" class="nickname-status" role="status"></span>
+      </form>
     </header>
 
     <section class="game-panel" aria-labelledby="game-title">
@@ -65,7 +71,7 @@
             autocapitalize="off" spellcheck="false" placeholder="set game.speed 1.5" aria-label="Digite um comando">
           <button type="submit">Executar</button>
         </form>
-      </div>
+      </section>
 
       <section class="leaderboard" aria-labelledby="leaderboard-title">
         <div class="leaderboard-heading">
@@ -75,13 +81,6 @@
           </div>
           <p id="leaderboard-status" class="leaderboard-status" role="status">Conectando ao placar...</p>
         </div>
-        <form id="nickname-form" class="nickname-form">
-          <label for="nickname-input">Seu apelido</label>
-          <input id="nickname-input" name="nickname" type="text" maxlength="20"
-            autocomplete="nickname" placeholder="Como quer aparecer?" required>
-          <button type="submit">Salvar apelido</button>
-          <span id="nickname-status" class="nickname-status" role="status"></span>
-        </form>
         <ol id="leaderboard-list" class="leaderboard-list" aria-label="Dez melhores pontuações">
           <li class="leaderboard-empty">Carregando pontuações...</li>
         </ol>

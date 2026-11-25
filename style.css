@@ -42,6 +42,22 @@ button {
   padding: 27px 2px 21px;
 }
 
+.game-header .nickname-form {
+  flex: 0 1 auto;
+  gap: 7px;
+  margin-top: 0;
+}
+
+.game-header .nickname-form input {
+  width: 145px;
+}
+
+.game-header .nickname-status {
+  position: absolute;
+  top: 67px;
+  right: 2px;
+}
+
 .brand {
   display: inline-flex;
   align-items: center;
@@ -455,7 +471,29 @@ kbd {
   }
 
   .game-header {
+    flex-wrap: wrap;
+    gap: 12px;
     padding: 18px 2px 16px;
+  }
+
+  .game-header .nickname-form {
+    flex: 1 1 100%;
+    gap: 7px;
+    margin-top: 0;
+  }
+
+  .game-header .nickname-form label {
+    width: auto;
+  }
+
+  .game-header .nickname-form input {
+    flex: 1 1 100px;
+    width: auto;
+  }
+
+  .game-header .nickname-status {
+    position: static;
+    flex-basis: 100%;
   }
 
   .game-panel {
@@ -512,22 +550,6 @@ kbd {
     text-align: left;
   }
 
-  .nickname-form {
-    align-items: stretch;
-    flex-wrap: wrap;
-  }
-
-  .nickname-form label {
-    width: 100%;
-  }
-
-  .nickname-form input {
-    flex: 1 1 140px;
-  }
-
-  .nickname-status {
-    flex-basis: 100%;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
