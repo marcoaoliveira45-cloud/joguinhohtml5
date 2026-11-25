@@ -192,7 +192,7 @@ kbd {
   padding: 0 17px;
   border: 0;
   border-radius: 12px;
-  background: linear-gradient(135deg, #f26a3d, #e84f67);
+  background: #f26a3d;
   box-shadow: 0 6px 14px rgb(223 86 53 / 24%);
   color: #fffdf6;
   cursor: pointer;
